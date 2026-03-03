@@ -76,3 +76,5 @@ AI Response → HTML Template → Puppeteer → PDF → Download
 - Managed full request lifecycle from frontend to database
 
 ---
+
+<!-- mongodb+srv://nesarikartejas10_db_user:tejas@1718@cluster0.ebssjgy.mongodb.net/?appName=Cluster0 -->
