@@ -1,6 +1,7 @@
 import app from "./src/app.js";
+import { config } from "./src/config/envConfig.js";
 
-const PORT = 3000;
+const PORT = config.port || 5000;
 
 function startServer() {
   app.listen(PORT, () => {
