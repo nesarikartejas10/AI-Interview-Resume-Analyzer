@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { config } from "../config/envConfig.js";
 
-export const registerUser = asyncHandler(async (req, res, next) => {
+export const registerController = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
@@ -49,5 +49,44 @@ export const registerUser = asyncHandler(async (req, res, next) => {
     success: true,
     user: { id: user._id, username: user.username, email: user.email },
     message: "User registered successfully",
+  });
+});
+
+export const loginController = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(createHttpError(400, "All fields are required"));
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return next(createHttpError(401, "Invalid credentials"));
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    return next(createHttpError(401, "Invalid credentials"));
+  }
+
+  const token = jwt.sign(
+    { id: user._id, username: user.username },
+    config.jwtSecret,
+    { expiresIn: "1d" },
+  );
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: config.env === "production",
+    sameSite: "strict",
+    maxAge: 1 * 24 * 60 * 60 * 1000,
+  });
+
+  return res.status(200).json({
+    status: true,
+    message: "User logged in successfully",
+    user: { id: user._id, username: user.username, email: user.email },
   });
 });
