@@ -1,5 +1,5 @@
 import express from "express";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
+import { globalErrorHandler } from "./middlewares/globalError.middleware.js";
 import authRouter from "./routes/auth.routes.js";
 import cookieParser from "cookie-parser";
 
