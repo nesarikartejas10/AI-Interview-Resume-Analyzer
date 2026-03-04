@@ -4,6 +4,7 @@ import createHttpError from "http-errors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { config } from "../config/envConfig.js";
+import { BlacklistToken } from "../models/blacklist.model.js";
 
 export const registerController = asyncHandler(async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -89,4 +90,17 @@ export const loginController = asyncHandler(async (req, res, next) => {
     message: "User logged in successfully",
     user: { id: user._id, username: user.username, email: user.email },
   });
+});
+
+export const logoutController = asyncHandler(async (req, res, next) => {
+  const token = req.cookies.token;
+  if (token) {
+    await BlacklistToken.create({ token });
+  }
+
+  res.clearCookie("token");
+
+  return res
+    .status(200)
+    .json({ success: true, message: "User logged out successfully" });
 });
