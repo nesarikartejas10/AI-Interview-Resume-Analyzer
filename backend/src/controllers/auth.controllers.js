@@ -104,3 +104,15 @@ export const logoutController = asyncHandler(async (req, res, next) => {
     .status(200)
     .json({ success: true, message: "User logged out successfully" });
 });
+
+export const getMeController = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  return res
+    .status(200)
+    .json({
+      success: true,
+      message: "User data fetched successfully",
+      user: { id: user._id, username: user.username, email: user.email },
+    });
+});
