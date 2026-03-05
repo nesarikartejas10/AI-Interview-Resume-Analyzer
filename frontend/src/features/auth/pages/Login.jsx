@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../auth.form.scss";
 
 const Login = () => {
@@ -30,6 +31,9 @@ const Login = () => {
           </div>
           <button className="button primary-button">Login</button>
         </form>
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </div>
     </main>
   );
