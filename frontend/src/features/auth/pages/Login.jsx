@@ -1,10 +1,28 @@
 import { Link } from "react-router-dom";
 import "../auth.form.scss";
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import Loader from "../components/Loader";
 
 const Login = () => {
-  const handleSubmit = (e) => {
+  const { loading, handleLogin } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await handleLogin({ email, password });
+    setEmail("");
+    setPassword("");
   };
+
+  if (loading) {
+    return (
+      <main>
+        <Loader />
+      </main>
+    );
+  }
   return (
     <main>
       <div className="form-container">
@@ -17,6 +35,8 @@ const Login = () => {
               id="email"
               name="email"
               placeholder="Enter email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -27,6 +47,8 @@ const Login = () => {
               id="password"
               name="password"
               placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button className="button primary-button">Login</button>
