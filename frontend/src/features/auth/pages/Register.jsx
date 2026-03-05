@@ -1,10 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../auth.form.scss";
+import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
+import Loader from "../components/Loader";
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const { loading, handleRegister } = useAuth();
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await handleRegister({ username, email, password });
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    navigate("/login");
   };
+
+  if (loading) {
+    return (
+      <main>
+        <Loader />
+      </main>
+    );
+  }
+
   return (
     <main>
       <div className="form-container">
@@ -17,6 +42,8 @@ const Register = () => {
               id="username"
               name="username"
               placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -27,6 +54,8 @@ const Register = () => {
               id="email"
               name="email"
               placeholder="Enter email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -37,6 +66,8 @@ const Register = () => {
               id="password"
               name="password"
               placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button className="button primary-button">Create Account</button>
