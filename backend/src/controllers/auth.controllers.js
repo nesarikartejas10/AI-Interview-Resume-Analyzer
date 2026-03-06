@@ -106,13 +106,15 @@ export const logoutController = asyncHandler(async (req, res, next) => {
 });
 
 export const getMeController = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).select("-password");
 
-  return res
-    .status(200)
-    .json({
-      success: true,
-      message: "User data fetched successfully",
-      user: { id: user._id, username: user.username, email: user.email },
-    });
+  if (!user) {
+    return next(createHttpError(404, "User not found"));
+  }
+
+  return res.status(200).json({
+    success: true,
+    message: "User data fetched successfully",
+    user: { id: user._id, username: user.username, email: user.email },
+  });
 });
