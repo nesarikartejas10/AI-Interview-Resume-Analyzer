@@ -7,6 +7,7 @@ const _config = {
   env: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET,
   frontendURL: process.env.FRONTEND_URL,
+  googleGenAiApiKey: process.env.GOOGLE_GENAI_API_KEY,
 };
 
 export const config = Object.freeze(_config);
