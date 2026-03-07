@@ -9,9 +9,18 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const getAndSetUser = async () => {
-      const data = await getMe();
-      setUser(data.user);
-      setLoading(false);
+      try {
+        const data = await getMe();
+
+        if (data && data.user) {
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getAndSetUser();

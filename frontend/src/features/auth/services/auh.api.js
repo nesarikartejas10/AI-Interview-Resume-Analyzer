@@ -42,5 +42,6 @@ export async function getMe() {
     return response.data;
   } catch (error) {
     console.log(error.message);
+    return null;
   }
 }
