@@ -19,12 +19,21 @@ export const generateInterviewReport = async ({
                         Job Description: ${jobDescription}
 `;
 
+  // ✅ Gemini compatible schema
+  const schema = zodToJsonSchema(interviewReportSchema, {
+    target: "openApi3", // Gemini ke saath compatible
+    $refStrategy: "none", // $ref remove karo
+  });
+
+  // ✅ $schema property remove karo — Gemini support nahi karta
+  delete schema.$schema;
+
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash-lite",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
-      responseSchema: zodToJsonSchema(interviewReportSchema),
+      responseSchema: schema,
     },
   });
 
