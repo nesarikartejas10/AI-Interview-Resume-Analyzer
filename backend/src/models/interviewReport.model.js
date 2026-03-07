@@ -74,6 +74,10 @@ const preparationPlanSchema = new mongoose.Schema(
 
 const interviewReportSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+    },
+
     jobDescription: {
       type: String,
       required: [true, "Job description is required"],
@@ -93,6 +97,10 @@ const interviewReportSchema = new mongoose.Schema(
     behavioralQuestions: [behavioralQuestionSchema],
     skillGaps: [skillGapSchema],
     preparationPlan: [preparationPlanSchema],
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true },
 );
